@@ -1,0 +1,73 @@
+
+### 1. Introducción
+
+#### 1.1 Propósito
+El propósito de este documento es especificar los requerimientos funcionales y no funcionales para el sistema de gestión de reservas de una agencia hotelera. Este documento servirá como una guía para el equipo de desarrollo, el equipo de pruebas y las partes interesadas del proyecto.
+
+#### 1.2 Alcance del Producto
+El software permitirá a la agencia hotelera gestionar hoteles, habitaciones, clientes y reservas de manera eficiente. Su funcionalidad abarca desde el registro de hoteles hasta la gestión de pagos y la visualización de calificaciones de clientes.
+
+#### 1.3 Definiciones, Acrónimos y Abreviaturas
+* **SRS:** Especificación de Requerimientos de Software (Software Requirements Specification).
+* **GUI:** Interfaz Gráfica de Usuario (Graphical User Interface).
+* **R1-R16:** Requerimientos de Software.
+
+### 2. Descripción General
+
+#### 2.1 Perspectiva del Producto
+El sistema de reservas será una aplicación web, accesible a través de navegadores estándar. Se integrará con un motor de base de datos para almacenar la información de hoteles, habitaciones, clientes y reservas.
+
+#### 2.2 Funciones del Producto
+Las principales funciones del sistema incluyen:
+* Gestión de información de hoteles y habitaciones.
+* Proceso de reserva y pago.
+* Gestión de clientes y sus perfiles.
+* Sistema de calificaciones y comentarios.
+* Configuración de temporadas y precios.
+
+#### 2.3 Características de los Usuarios
+* **Administrador de Agencia (Luciana):** Responsable de la configuración general, registro de hoteles y la gestión de políticas.
+* **Asistente (Felipe):** Ayuda en la gestión diaria, como la actualización de estados de habitaciones.
+* **Cliente (Usuario Final):** Utiliza la plataforma para buscar, comparar y reservar habitaciones.
+
+---
+
+### 3. Requerimientos Funcionales
+
+#### 3.1 Módulo de Hoteles y Habitaciones
+* **R1:** El sistema debe permitir **registrar un nuevo hotel** con su nombre, dirección, teléfono, correo electrónico, ubicación geográfica, descripción de servicios y fotos.
+* **R2:** El sistema debe permitir **definir y aplicar ofertas especiales** para hoteles, como promociones por temporada o paquetes.
+* **R3:** El sistema debe permitir **registrar cada habitación** de un hotel, incluyendo su tipo, descripción, precio base, servicios incluidos, capacidad y fotos.
+* **R4:** El sistema debe permitir **establecer el estado** de un hotel o habitación como "activo" o "inactivo". Solo los activos podrán ser reservados.
+* **R5:** El sistema debe permitir **ajustar el precio** de una habitación según la cantidad de personas (sin exceder la capacidad) y la temporada.
+
+#### 3.2 Módulo de Clientes y Reservas
+* **R6:** El sistema debe permitir **registrar a un cliente** con su nombre completo, número de teléfono, correo electrónico y dirección.
+* **R7:** El sistema debe permitir a los clientes **buscar habitaciones** por fecha, ubicación, calificación y precio, incluso combinando varios criterios.
+* **R8:** El sistema debe permitir al cliente **ver una descripción detallada** de la habitación, sus servicios, fotos y las calificaciones y comentarios de otros huéspedes.
+* **R9:** El sistema debe permitir **formalizar una reserva** una vez que el pago sea confirmado, asignando esa habitación a un cliente en fechas específicas.
+* **R10:** El sistema debe permitir **gestionar las diferentes políticas de pago** y de cancelación.
+
+#### 3.3 Módulo de Calificaciones y Comentarios
+* **R11:** El sistema debe permitir que los clientes **dejen comentarios y una calificación** sobre su experiencia después de su estancia.
+* **R12:** El sistema debe permitir **calcular una calificación promedio** para cada habitación a partir de los comentarios.
+* **R13:** El sistema debe permitir **calcular una calificación promedio general** para el hotel a partir de todas las calificaciones de sus habitaciones.
+
+### 4. Requerimientos No Funcionales
+
+#### 4.1 Requerimientos de Usabilidad
+* **R16:** La **GUI** debe ser **intuitiva y fácil de navegar** para todos los roles, con un diseño limpio y una estructura lógica.
+
+#### 4.2 Requerimientos de Seguridad
+* **R16:** La información de los clientes y las transacciones deben estar protegidas con **protocolos de seguridad** robustos (cifrado de datos).
+
+#### 4.3 Requerimientos de Rendimiento
+* **R14:** El sistema debe tener un **calendario detallado** que se actualice en tiempo real para mostrar la disponibilidad.
+* **R15:** El sistema debe ser capaz de **establecer calendarios de temporada** a nivel regional y por hotel, afectando los precios automáticamente.
+
+#### 4.4 Requerimientos de Escalabilidad
+* El sistema debe ser **escalable** para manejar un crecimiento futuro en el número de hoteles, habitaciones y reservas sin degradar el rendimiento.
+
+---
+
+Este es un borrador inicial de un SRS. Podríamos seguir detallándolo con casos de uso, diagramas y prototipos para que sea aún más completo. ¿Qué te gustaría que detalláramos a continuación?

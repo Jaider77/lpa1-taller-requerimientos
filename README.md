@@ -6,14 +6,13 @@
 - ver [badgen](https://badgen.net/) o [shields](https://shields.io/) para otros tipos de _badges_
 
 ## Autor
-
-- [@estudiante](https://www.github.com/estudiante)
+  Jaider francisco Asprilla Reyes 
+- [@estudiante](https://github.com/Jaider77)
 
 ## Descripción del Proyecto
 
-TODO: Corregir la descripción - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut quam dolor. Quisque elementum est sed massa gravida convallis. Donec volutpat turpis eget lectus feugiat congue. Morbi rutrum auctor eleifend. Etiam iaculis libero tellus, vel aliquet erat tempor sed. Duis efficitur quam vel sapien luctus, sed semper lacus mollis. Suspendisse non nunc eleifend, aliquet elit eget, condimentum augue.
-
-Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus vel nibh fringilla, porta elit vel, consequat libero. Nulla et libero ac nulla ultricies sollicitudin. Sed viverra non nulla id convallis. Morbi vel varius lacus, in maximus nunc. Praesent sed semper diam. Pellentesque vehicula nulla augue, ut porta dolor consequat at.
+# siatema de agencias de viaje 
+El Sistema de Reservas Hoteleras es una aplicación que permite a los usuarios buscar, comparar y reservar habitaciones en un hotel. El sistema gestiona el registro del hotel, habitaciones, ofertas, calendarios de disponibilidad, políticas de pago y cancelación, así como la calificación y comentarios de los clientes. Facilita la administración del hotel y mejora la experiencia de los huéspedes al ofrecer información detallada y procesos de reserva eficientes.
 
 ## Documentación
 
@@ -21,16 +20,42 @@ Revisar la documentación en [`./docs`](./docs)
 
 ### Requerimientos
 
-TODO: Corregir la lista de requerimientos:
-- **R1**: El sistema debe ...
-- **R2**: El sistema debe ...
-<br>...<br>
-- **Rn**: El sistema debe ...
-- **Rm**: El sistema debe ...
+### Módulo de Hoteles y Habitaciones
 
-### Diseño
+- **R1:** El sistema debe permitir **registrar un nuevo hotel** con su nombre, dirección, teléfono, correo electrónico, ubicación geográfica, descripción de servicios y fotos.
+- **R2:** El sistema debe permitir **definir y aplicar ofertas especiales** para hoteles, como promociones por temporada o paquetes.
+- **R3:** El sistema debe permitir **registrar cada habitación** de un hotel, incluyendo su tipo, descripción, precio base, servicios incluidos, capacidad y fotos.
+- **R4:** El sistema debe permitir **establecer el estado** de un hotel o habitación como "activo" o "inactivo" (por mantenimiento, limpieza, o reformas). Solo los activos podrán ser reservados.
+- **R5:** El sistema debe permitir **ajustar el precio** de una habitación según la cantidad de personas (sin exceder la capacidad) y la temporada.
 
-TODO: Crear el diagrama de clases:
+---
+
+### Módulo de Clientes y Reservas
+
+- **R6:** El sistema debe permitir **registrar a un cliente** con su nombre completo, número de teléfono, correo electrónico y dirección.
+- **R7:** El sistema debe permitir a los clientes **buscar habitaciones** por fecha, ubicación, calificación y precio, incluso combinando varios criterios.
+- **R8:** El sistema debe permitir al cliente **ver una descripción detallada** de la habitación, sus servicios, fotos y, muy importante, las calificaciones y comentarios de otros huéspedes.
+- **R9:** El sistema debe permitir **formalizar una reserva** una vez que el pago sea confirmado, asignando esa habitación a un cliente en fechas específicas.
+- **R10:** El sistema debe permitir **gestionar las diferentes políticas de pago** (pago por adelantado o al llegar) y de cancelación (con o sin penalidad).
+
+---
+
+### Módulo de Calificaciones y Comentarios
+
+- **R11:** El sistema debe permitir que los clientes **dejen comentarios y una calificación** sobre su experiencia después de su estancia.
+- **R12:** El sistema debe permitir **calcular una calificación promedio** para cada habitación a partir de los comentarios.
+- **R13:** El sistema debe permitir **calcular una calificación promedio general** para el hotel a partir de todas las calificaciones de sus habitaciones.
+
+---
+
+### Requerimientos Transversales
+
+- **R14:** El sistema debe permitir tener un **calendario detallado** para cada habitación que muestre su disponibilidad y las fechas de ocupación.
+- **R15:** El sistema debe permitir **establecer calendarios de temporada** (alta, baja) a nivel regional y para cada hotel, lo cual afectará los precios automáticamente.
+- **R16:** El sistema debe permitir operar con una **interfaz de usuario intuitiva y segura** para proteger la información de los clientes y las transacciones.
+
+
+ Crear el diagrama de clases:
 
 ![Diagrama de Clases](./docs/diagramas.png)
 
