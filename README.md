@@ -8,6 +8,27 @@
 ## Autor
   Jaider francisco Asprilla Reyes 
 - [@estudiante](https://github.com/Jaider77)
+## estructura del proyecto 
+.
+├── app/
+│   ├── __init__.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── hotel.py
+│   │   ├── habitacion.py
+│   │   ├── cliente.py
+│   │   ├── reserva.py
+│   │   ├── comentario.py
+│   │   ├── temporada.py
+│   │   ├── oferta.py
+│   ├── routes/
+│   │   ├── main.py
+│   │   └── __init__.py
+│   ├── templates/
+│   │   └── ...
+│   └── static/
+│       └── ...
+└── run.py
 
 ## Descripción del Proyecto
 
