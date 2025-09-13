@@ -1,5 +1,5 @@
-´´´
-mermaid
+# Diagrama de clases
+```mermaid
 
 classDiagram
     direction LR
@@ -75,4 +75,4 @@ classDiagram
     Reserva "1" -- "1" Cliente : esPara >
 
 
-´´´
+```
