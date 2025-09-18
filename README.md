@@ -102,6 +102,9 @@ Revisar la documentación en [`./docs`](./docs)
 |Taipei|912|220|245|298|
 |Tokio|989|189|231|255|
 
+# Activacion del entorno 
+.venv/Scripts/activate
+
 ## Instalación
 
 TODO: Corregir la explicación de la instalación - Morbi quam lectus, tempus sit amet mi non, facilisis dignissim erat. Aenean tortor libero, rhoncus eu eleifend ut, volutpat id nisi. Ut porta eros at ante rutrum pharetra. Integer nec nulla dictum, vestibulum ligula id, hendrerit ex. Morbi eget tortor metus.
