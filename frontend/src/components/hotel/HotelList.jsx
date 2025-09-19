@@ -1,6 +1,8 @@
+// frontend/src/components/hotel/HotelList.jsx
 import React from 'react';
 
-const HotelList = ({ hoteles }) => {
+// Ahora, este componente recibe una nueva propiedad: onSelectHotel
+const HotelList = ({ hoteles, onSelectHotel }) => {
   return (
     <div>
       <h2>Lista de Hoteles</h2>
@@ -10,10 +12,10 @@ const HotelList = ({ hoteles }) => {
         <ul className="hotel-list">
           {hoteles.map(hotel => (
             <li key={hotel.id} className="hotel-item">
-              <h3>{hotel.nombre}</h3>
-              <p>Dirección: {hotel.direccion}</p>
-              <p>Teléfono: {hotel.telefono}</p>
-              <p>Correo: {hotel.correo}</p>
+              <button onClick={() => onSelectHotel(hotel)}>
+                <h3>{hotel.nombre}</h3>
+                <p>Dirección: {hotel.direccion}</p>
+              </button>
             </li>
           ))}
         </ul>
