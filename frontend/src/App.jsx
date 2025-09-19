@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import HotelForm from './HotelForm'; // Importa el nuevo componente
+import HotelForm from './components/hotel/HotelForm'; // Importa el nuevo componente
 import './App.css';
 
 function App() {
