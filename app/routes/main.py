@@ -1,5 +1,6 @@
 # app/routes/main.py
 
+import datetime
 from flask import Blueprint, request, jsonify
 from app import db
 from app.models import cliente
@@ -65,32 +66,92 @@ def obtener_hotel(hotel_id):
         'calificacion': hotel.calificacion_promedio
     }), 200
 
+# --- OPERACIONES CRUD PARA HABITACIONES ---
+@main.route('/habitacion', methods=['POST'])
+def crear_habitacion():
+    data = request.json
+    hotel_id = data.get('hotel_id')
+    if hotel_id is None:
+        return jsonify({'error': 'hotel_id es requerido'}), 400
+
+    hotel = Hotel.query.get_or_404(hotel_id)
+    nueva_habitacion = Habitacion(
+        tipo=data['tipo'],
+        precio_base=data['precio_base'],
+        capacidad=data['capacidad'],
+        hotel=hotel
+    )
+    db.session.add(nueva_habitacion)
+    db.session.commit()
+    return jsonify({'mensaje': 'Habitacion creada con exito', 'id': nueva_habitacion.id}), 201
+
+@main.route('/habitaciones', methods=['GET'])
+def obtener_habitaciones():
+    habitaciones = Habitacion.query.all()
+    lista_habitaciones = []
+    for habitacion in habitaciones:
+        lista_habitaciones.append({
+            'id': habitacion.id,
+            'tipo': habitacion.tipo,
+            'precio_base': habitacion.precio_base,
+            'capacidad': habitacion.capacidad,
+            'hotel_id': habitacion.hotel_id
+        })
+    return jsonify(lista_habitaciones), 200
+
+
 # --- OPERACIONES CRUD PARA RESERVAS --- 
-# Crear una reserva (CREATE)
 @main.route('/reserva', methods=['POST'])
 def crear_reserva():
     data = request.json
+    
+    # Valida los campos obligatorios
     required_fields = ['cliente_id', 'habitacion_id', 'fecha_entrada', 'fecha_salida', 'precio_total']
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Faltan datos obligatorios'}), 400
-    cliente = Cliente.query.get_or_404(data['cliente_id'])
-    habitacion = Habitacion.query.get_or_404(data['habitacion_id'])
-    # Primero, se buscan el cliente y la habitación
+
+    # Convierte las fechas de string a objetos date de Python
+    try:
+        fecha_entrada_obj = datetime.datetime.strptime(data['fecha_entrada'], '%Y-%m-%d').date()
+        fecha_salida_obj = datetime.datetime.strptime(data['fecha_salida'], '%Y-%m-%d').date()
+    except ValueError:
+        return jsonify({'error': 'Formato de fecha incorrecto. Use YYYY-MM-DD.'}), 400
+    
+    # Busca el cliente y la habitación
     cliente = Cliente.query.get_or_404(data['cliente_id'])
     habitacion = Habitacion.query.get_or_404(data['habitacion_id'])
 
-    # Luego, se crea la instancia de la reserva
+    # Crea la instancia de la reserva con los objetos de fecha
     nueva_reserva = Reserva(
-    cliente_id=cliente.id,
-    habitacion_id=habitacion.id,
-    fecha_entrada=data['fecha_entrada'],
-    fecha_salida=data['fecha_salida'],
-    precio_total=data['precio_total']
+        cliente_id=cliente.id,
+        habitacion_id=habitacion.id,
+        fecha_entrada=fecha_entrada_obj,
+        fecha_salida=fecha_salida_obj,
+        precio_total=data['precio_total']
     )
+
     db.session.add(nueva_reserva)
     db.session.commit()
+    
     return jsonify({'mensaje': 'Reserva creada con éxito'}), 201
 
+# Obtener todas las reservas (READ ALL)
+@main.route('/reservas', methods=['GET'])
+def obtener_reservas():
+    reservas = Reserva.query.all()
+    lista_reservas = []
+    for reserva in reservas:
+        lista_reservas.append({
+            'id': reserva.id,
+            'cliente_id': reserva.cliente_id,
+            'habitacion_id': reserva.habitacion_id,
+            'fecha_entrada': reserva.fecha_entrada.strftime('%Y-%m-%d'),
+            'fecha_salida': reserva.fecha_salida.strftime('%Y-%m-%d'),
+            'precio_total': reserva.precio_total
+        })
+    return jsonify(lista_reservas), 200
+
+# --- OPERACIONES CRUD PARA CLIENTES ---
 
 @main.route('/cliente', methods=['POST'])
 def crear_cliente():
