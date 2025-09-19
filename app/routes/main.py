@@ -195,3 +195,41 @@ def crear_comentario():
     db.session.add(nuevo_comentario)
     db.session.commit()
     return jsonify({'mensaje': 'Comentario registrado con éxito'}), 201
+
+
+
+# Obtener un hotel por ID (READ ONE)
+@main.route('/hotel/<int:hotel_id>', methods=['GET'])
+def obtener_hotel_por_id(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    return jsonify({
+        'id': hotel.id,
+        'nombre': hotel.nombre,
+        'direccion': hotel.direccion,
+        'telefono': hotel.telefono,
+        'correo': hotel.correo,
+        'ubicacion_geografica': hotel.ubicacion_geografica,
+        'descripcion_servicios': hotel.descripcion_servicios
+    }), 200
+
+# Actualizar un hotel por ID (UPDATE)
+@main.route('/hotel/<int:hotel_id>', methods=['PUT'])
+def actualizar_hotel(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    data = request.json
+    hotel.nombre = data.get('nombre', hotel.nombre)
+    hotel.direccion = data.get('direccion', hotel.direccion)
+    hotel.telefono = data.get('telefono', hotel.telefono)
+    hotel.correo = data.get('correo', hotel.correo)
+    hotel.ubicacion_geografica = data.get('ubicacion_geografica', hotel.ubicacion_geografica)
+    hotel.descripcion_servicios = data.get('descripcion_servicios', hotel.descripcion_servicios)
+    db.session.commit()
+    return jsonify({'mensaje': 'Hotel actualizado con exito'}), 200
+
+# Eliminar un hotel por ID (DELETE)
+@main.route('/hotel/<int:hotel_id>', methods=['DELETE'])
+def eliminar_hotel(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    db.session.delete(hotel)
+    db.session.commit()
+    return jsonify({'mensaje': 'Hotel eliminado con exito'}), 200
