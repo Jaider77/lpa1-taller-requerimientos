@@ -1,8 +1,8 @@
 // frontend/src/components/cliente/ClienteList.jsx
-
 import React from 'react';
 
-const ClienteList = ({ clientes }) => {
+// Ahora el componente recibe la función onSelectCliente
+const ClienteList = ({ clientes, onSelectCliente }) => {
   return (
     <div>
       <h2>Lista de Clientes</h2>
@@ -12,9 +12,10 @@ const ClienteList = ({ clientes }) => {
         <ul className="client-list">
           {clientes.map(cliente => (
             <li key={cliente.id} className="client-item">
-              <h3>{cliente.nombre_completo}</h3>
-              <p>Correo: {cliente.correo}</p>
-              <p>Teléfono: {cliente.telefono}</p>
+              <button onClick={() => onSelectCliente(cliente)}>
+                <h3>{cliente.nombre_completo}</h3>
+                <p>Correo: {cliente.correo}</p>
+              </button>
             </li>
           ))}
         </ul>

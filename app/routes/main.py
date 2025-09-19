@@ -1,5 +1,5 @@
 # app/routes/main.py
-
+from flask import request, jsonify
 import datetime
 from flask import Blueprint, request, jsonify
 from app import db
@@ -151,6 +151,37 @@ def obtener_reservas():
         })
     return jsonify(lista_reservas), 200
 
+@main.route('/reserva/<int:reserva_id>', methods=['GET'])
+def obtener_reserva_por_id(reserva_id):
+    reserva = Reserva.query.get_or_404(reserva_id)
+    return jsonify({
+        'id': reserva.id,
+        'cliente_id': reserva.cliente_id,
+        'habitacion_id': reserva.habitacion_id,
+        'fecha_entrada': reserva.fecha_entrada,
+        'fecha_salida': reserva.fecha_salida,
+        'precio_total': reserva.precio_total
+    }), 200
+
+@main.route('/reserva/<int:reserva_id>', methods=['PUT'])
+def actualizar_reserva(reserva_id):
+    reserva = Reserva.query.get_or_404(reserva_id)
+    datos = request.json
+    reserva.cliente_id = datos.get('cliente_id', reserva.cliente_id)
+    reserva.habitacion_id = datos.get('habitacion_id', reserva.habitacion_id)
+    reserva.fecha_entrada = datos.get('fecha_entrada', reserva.fecha_entrada)
+    reserva.fecha_salida = datos.get('fecha_salida', reserva.fecha_salida)
+    reserva.precio_total = datos.get('precio_total', reserva.precio_total)
+    db.session.commit()
+    return jsonify({'mensaje': 'Reserva actualizada con éxito'}), 200
+
+@main.route('/reserva/<int:reserva_id>', methods=['DELETE'])
+def eliminar_reserva(reserva_id):
+    reserva = Reserva.query.get_or_404(reserva_id)
+    db.session.delete(reserva)
+    db.session.commit()
+    return jsonify({'mensaje': 'Reserva eliminada con éxito'}), 200
+
 # --- OPERACIONES CRUD PARA CLIENTES ---
 
 @main.route('/cliente', methods=['POST'])
@@ -180,6 +211,38 @@ def obtener_clientes():
             'direccion': cliente.direccion
         })
     return jsonify(lista_clientes), 200
+
+# Obtener un cliente por ID
+@main.route('/cliente/<int:cliente_id>', methods=['GET'])
+def obtener_cliente_por_id(cliente_id):
+    cliente = Cliente.query.get_or_404(cliente_id)
+    return jsonify({
+        'id': cliente.id,
+        'nombre_completo': cliente.nombre_completo,
+        'telefono': cliente.telefono,
+        'correo': cliente.correo,
+        'direccion': cliente.direccion
+    }), 200
+
+# Actualizar un cliente por ID
+@main.route('/cliente/<int:cliente_id>', methods=['PUT'])
+def actualizar_cliente(cliente_id):
+    cliente = Cliente.query.get_or_404(cliente_id)
+    datos = request.json
+    cliente.nombre_completo = datos.get('nombre_completo', cliente.nombre_completo)
+    cliente.telefono = datos.get('telefono', cliente.telefono)
+    cliente.correo = datos.get('correo', cliente.correo)
+    cliente.direccion = datos.get('direccion', cliente.direccion)
+    db.session.commit()
+    return jsonify({'mensaje': 'Cliente actualizado con éxito'}), 200
+
+# Eliminar un cliente por ID
+@main.route('/cliente/<int:cliente_id>', methods=['DELETE'])
+def eliminar_cliente(cliente_id):
+    cliente = Cliente.query.get_or_404(cliente_id)
+    db.session.delete(cliente)
+    db.session.commit()
+    return jsonify({'mensaje': 'Cliente eliminado con éxito'}), 200
 # --- OPERACIONES CRUD PARA COMENTARIOS ---
 
 # Crear un comentario (CREATE)

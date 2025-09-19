@@ -7,8 +7,10 @@ import HotelList from './components/hotel/HotelList';
 import HotelDetail from './components/hotel/HotelDetail';
 import ClienteForm from './components/cliente/ClienteForm';
 import ClienteList from './components/cliente/ClienteList';
+import ClienteDetail from './components/cliente/ClienteDetail';
 import ReservaForm from './components/reserva/ReservaForm';
 import ReservaList from './components/reserva/ReservaList';
+import ReservaDetail from './components/reserva/ReservaDetail'; // Importa el nuevo componente
 import './App.css';
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
   const [clientes, setClientes] = useState([]);
   const [reservas, setReservas] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState(null);
+  const [selectedCliente, setSelectedCliente] = useState(null);
+  const [selectedReserva, setSelectedReserva] = useState(null); // Nuevo estado
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -67,18 +71,43 @@ function App() {
     fetchReservas();
   }, []);
 
+  // Handlers para hoteles
   const handleSelectHotel = (hotel) => {
     setSelectedHotel(hotel);
   };
-
   const handleHotelUpdate = () => {
     fetchHoteles();
     setSelectedHotel(null);
   };
-
   const handleHotelDelete = () => {
     fetchHoteles();
     setSelectedHotel(null);
+  };
+
+  // Handlers para clientes
+  const handleSelectCliente = (cliente) => {
+    setSelectedCliente(cliente);
+  };
+  const handleClienteUpdate = () => {
+    fetchClientes();
+    setSelectedCliente(null);
+  };
+  const handleClienteDelete = () => {
+    fetchClientes();
+    setSelectedCliente(null);
+  };
+
+  // Handlers para reservas
+  const handleSelectReserva = (reserva) => {
+    setSelectedReserva(reserva);
+  };
+  const handleReservaUpdate = () => {
+    fetchReservas();
+    setSelectedReserva(null);
+  };
+  const handleReservaDelete = () => {
+    fetchReservas();
+    setSelectedReserva(null);
   };
 
   if (loading) return <div>Cargando...</div>;
@@ -91,7 +120,6 @@ function App() {
       </header>
       <main>
         <div className="section">
-          <HotelForm onHotelAdded={fetchHoteles} />
           {selectedHotel ? (
             <HotelDetail
               hotel={selectedHotel}
@@ -100,16 +128,41 @@ function App() {
               onBack={() => setSelectedHotel(null)}
             />
           ) : (
-            <HotelList hoteles={hoteles} onSelectHotel={handleSelectHotel} />
+            <>
+              <HotelForm onHotelAdded={fetchHoteles} />
+              <HotelList hoteles={hoteles} onSelectHotel={handleSelectHotel} />
+            </>
           )}
         </div>
         <div className="section">
-          <ClienteForm onClienteAdded={fetchClientes} />
-          <ClienteList clientes={clientes} />
+          {selectedCliente ? (
+            <ClienteDetail
+              cliente={selectedCliente}
+              onUpdate={handleClienteUpdate}
+              onDelete={handleClienteDelete}
+              onBack={() => setSelectedCliente(null)}
+            />
+          ) : (
+            <>
+              <ClienteForm onClienteAdded={fetchClientes} />
+              <ClienteList clientes={clientes} onSelectCliente={handleSelectCliente} />
+            </>
+          )}
         </div>
         <div className="section">
-          <ReservaForm onReservaAdded={fetchReservas} />
-          <ReservaList reservas={reservas} />
+          {selectedReserva ? (
+            <ReservaDetail
+              reserva={selectedReserva}
+              onUpdate={handleReservaUpdate}
+              onDelete={handleReservaDelete}
+              onBack={() => setSelectedReserva(null)}
+            />
+          ) : (
+            <>
+              <ReservaForm onReservaAdded={fetchReservas} />
+              <ReservaList reservas={reservas} onSelectReserva={handleSelectReserva} />
+            </>
+          )}
         </div>
       </main>
     </div>
