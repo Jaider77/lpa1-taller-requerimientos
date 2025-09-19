@@ -1,8 +1,9 @@
+// frontend/src/components/hotel/HotelForm.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const HotelForm = ({ onHotelAdded }) => {
-  // Estado para guardar los datos del formulario
   const [formData, setFormData] = useState({
     nombre: '',
     direccion: '',
@@ -11,21 +12,16 @@ const HotelForm = ({ onHotelAdded }) => {
     ubicacion_geografica: '',
     descripcion_servicios: ''
   });
-
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita que la página se recargue
-
+    e.preventDefault();
     try {
-      // Envía una solicitud POST a tu API de Flask
       const response = await axios.post('http://127.0.0.1:5000/hotel', formData);
       setMessage(response.data.mensaje);
       setError('');
@@ -36,8 +32,8 @@ const HotelForm = ({ onHotelAdded }) => {
         correo: '',
         ubicacion_geografica: '',
         descripcion_servicios: ''
-      }); // Limpia el formulario
-      onHotelAdded(); // Llama a la función para actualizar la lista de hoteles
+      });
+      onHotelAdded();
     } catch (err) {
       setError('Error al crear el hotel. Verifica que los datos sean correctos.');
       setMessage('');

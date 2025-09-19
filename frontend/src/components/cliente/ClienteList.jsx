@@ -1,3 +1,5 @@
+// frontend/src/components/cliente/ClienteList.jsx
+
 import React from 'react';
 
 const ClienteList = ({ clientes }) => {

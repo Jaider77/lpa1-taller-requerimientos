@@ -1,3 +1,5 @@
+// frontend/src/components/cliente/ClienteForm.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -8,7 +10,6 @@ const ClienteForm = ({ onClienteAdded }) => {
     correo: '',
     direccion: ''
   });
-
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 

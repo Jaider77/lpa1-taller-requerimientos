@@ -1,7 +1,7 @@
 // frontend/src/components/hotel/HotelList.jsx
+
 import React from 'react';
 
-// Ahora, este componente recibe una nueva propiedad: onSelectHotel
 const HotelList = ({ hoteles, onSelectHotel }) => {
   return (
     <div>

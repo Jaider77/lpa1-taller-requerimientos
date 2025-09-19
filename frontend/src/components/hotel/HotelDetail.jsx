@@ -1,4 +1,5 @@
 // frontend/src/components/hotel/HotelDetail.jsx
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -58,9 +59,30 @@ const HotelDetail = ({ hotel, onUpdate, onDelete, onBack }) => {
       ) : (
         <form onSubmit={handleUpdate}>
           <h3>Editar Hotel</h3>
-          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} />
-          <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} />
-          {/* ... (agrega los otros campos de input aquí) ... */}
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Dirección:</label>
+            <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Teléfono:</label>
+            <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Correo:</label>
+            <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Ubicación:</label>
+            <input type="text" name="ubicacion_geografica" value={formData.ubicacion_geografica} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Descripción:</label>
+            <textarea name="descripcion_servicios" value={formData.descripcion_servicios} onChange={handleChange} />
+          </div>
           <button type="submit">Guardar Cambios</button>
           <button type="button" onClick={() => setIsEditing(false)}>Cancelar</button>
         </form>

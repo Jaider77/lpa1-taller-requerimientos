@@ -1,3 +1,5 @@
+// frontend/src/components/reserva/ReservaForm.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -9,13 +11,11 @@ const ReservaForm = ({ onReservaAdded }) => {
     fecha_salida: '',
     precio_total: ''
   });
-
   const [clientes, setClientes] = useState([]);
   const [habitaciones, setHabitaciones] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Carga los clientes y habitaciones al iniciar el componente
   useEffect(() => {
     const fetchDependencies = async () => {
       try {

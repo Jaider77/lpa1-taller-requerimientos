@@ -1,3 +1,5 @@
+// frontend/src/components/reserva/ReservaList.jsx
+
 import React from 'react';
 
 const ReservaList = ({ reservas }) => {
