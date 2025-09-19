@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import HotelForm from './components/hotel/HotelForm'; // Importa el nuevo componente
+import HotelForm from './components/hotel/HotelForm'; // Nueva ruta
+import HotelList from './components/hotel/HotelList'; // Nueva ruta
 import './App.css';
 
 function App() {
@@ -23,11 +24,11 @@ function App() {
   };
 
   useEffect(() => {
-    fetchHoteles(); // Llama a la función de carga inicial
+    fetchHoteles();
   }, []);
 
   if (loading) {
-    return <div>Cargando hoteles...</div>;
+    return <div>Cargando...</div>;
   }
 
   if (error) {
@@ -40,25 +41,8 @@ function App() {
         <h1>Gestión de Hoteles</h1>
       </header>
       <main>
-        {/* Renderiza el formulario */}
         <HotelForm onHotelAdded={fetchHoteles} />
-        
-        {/* Renderiza la lista de hoteles */}
-        <h2>Lista de Hoteles</h2>
-        {hoteles.length === 0 ? (
-          <p>No se encontraron hoteles.</p>
-        ) : (
-          <ul className="hotel-list">
-            {hoteles.map(hotel => (
-              <li key={hotel.id} className="hotel-item">
-                <h2>{hotel.nombre}</h2>
-                <p>Dirección: {hotel.direccion}</p>
-                <p>Teléfono: {hotel.telefono}</p>
-                <p>Correo: {hotel.correo}</p>
-              </li>
-            ))}
-          </ul>
-        )}
+        <HotelList hoteles={hoteles} />
       </main>
     </div>
   );
