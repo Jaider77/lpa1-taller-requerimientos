@@ -12,7 +12,7 @@ import ReservaForm from './components/reserva/ReservaForm';
 import ReservaList from './components/reserva/ReservaList';
 import ReservaDetail from './components/reserva/ReservaDetail';
 import Navigation from './components/Navigation';
-import Home from './components/Home'; // Importa el nuevo componente Home
+import Home from './components/Home';
 import './App.css';
 
 function App() {
@@ -22,14 +22,52 @@ function App() {
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [selectedReserva, setSelectedReserva] = useState(null);
-  const [currentView, setCurrentView] = useState('home'); // Cambia el estado inicial a 'home'
+  const [currentView, setCurrentView] = useState('home');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchHoteles = () => { /* ... (mantén la función sin cambios) ... */ };
-  const fetchClientes = () => { /* ... (mantén la función sin cambios) ... */ };
-  const fetchReservas = () => { /* ... (mantén la función sin cambios) ... */ };
-  
+  const fetchHoteles = () => {
+    setLoading(true);
+    axios.get('http://127.0.0.1:5000/hoteles')
+      .then(response => {
+        setHoteles(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError("Hubo un error al cargar los hoteles.");
+        setLoading(false);
+        console.error("Error al cargar hoteles:", err);
+      });
+  };
+
+  const fetchClientes = () => {
+    setLoading(true);
+    axios.get('http://127.0.0.1:5000/clientes')
+      .then(response => {
+        setClientes(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError("Hubo un error al cargar los clientes.");
+        setLoading(false);
+        console.error("Error al cargar clientes:", err);
+      });
+  };
+
+  const fetchReservas = () => {
+    setLoading(true);
+    axios.get('http://127.0.0.1:5000/reservas')
+      .then(response => {
+        setReservas(response.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError("Hubo un error al cargar las reservas.");
+        setLoading(false);
+        console.error("Error al cargar reservas:", err);
+      });
+  };
+
   useEffect(() => {
     fetchHoteles();
     fetchClientes();
@@ -37,16 +75,34 @@ function App() {
   }, []);
 
   const handleSelectHotel = (hotel) => setSelectedHotel(hotel);
-  const handleHotelUpdate = () => { fetchHoteles(); setSelectedHotel(null); };
-  const handleHotelDelete = () => { fetchHoteles(); setSelectedHotel(null); };
+  const handleHotelUpdate = () => {
+    fetchHoteles();
+    setSelectedHotel(null);
+  };
+  const handleHotelDelete = () => {
+    fetchHoteles();
+    setSelectedHotel(null);
+  };
 
   const handleSelectCliente = (cliente) => setSelectedCliente(cliente);
-  const handleClienteUpdate = () => { fetchClientes(); setSelectedCliente(null); };
-  const handleClienteDelete = () => { fetchClientes(); setSelectedCliente(null); };
+  const handleClienteUpdate = () => {
+    fetchClientes();
+    setSelectedCliente(null);
+  };
+  const handleClienteDelete = () => {
+    fetchClientes();
+    setSelectedCliente(null);
+  };
 
   const handleSelectReserva = (reserva) => setSelectedReserva(reserva);
-  const handleReservaUpdate = () => { fetchReservas(); setSelectedReserva(null); };
-  const handleReservaDelete = () => { fetchReservas(); setSelectedReserva(null); };
+  const handleReservaUpdate = () => {
+    fetchReservas();
+    setSelectedReserva(null);
+  };
+  const handleReservaDelete = () => {
+    fetchReservas();
+    setSelectedReserva(null);
+  };
 
   const handleNavigate = (view) => {
     setCurrentView(view);
@@ -107,6 +163,6 @@ function App() {
       </main>
     </div>
   );
-};
+}
 
 export default App;

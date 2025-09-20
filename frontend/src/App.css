@@ -165,3 +165,33 @@ button:hover {
   margin-top: 15px;
   font-weight: bold;
 }
+/* frontend/src/App.css */
+
+/* ... (mantén el resto de tu CSS anterior) ... */
+
+/* Estilos específicos para la página de inicio */
+.home-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.home-container h2 {
+  font-size: 2.2em;
+  color: #1f0404;
+  margin-bottom: 20px;
+}
+
+.home-container p {
+  font-size: 1.1em;
+  color: #1a0606;
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+.home-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}

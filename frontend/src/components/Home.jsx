@@ -10,8 +10,8 @@ const Home = () => {
         Esta aplicación te permite gestionar de forma eficiente la información de tus hoteles, clientes y reservas.
         Utiliza la barra de navegación en la parte superior para acceder a las diferentes secciones.
       </p>
-      {/* Opcional: Puedes añadir una imagen aquí */}
-      <img src="https://via.placeholder.com/600x400.png?text=Hoteles+App" alt="Ilustración de un hotel" className="home-image" />
+      {/* Puedes cambiar esta imagen por una de tu elección. */}
+      <img src="https://images.unsplash.com/photo-1549488344-934d40212e33?q=80&w=1740&auto=format&fit=crop" alt="Habitación de hotel" className="home-image" />
     </div>
   );
 };
