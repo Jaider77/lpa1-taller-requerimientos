@@ -5,6 +5,7 @@ import React from 'react';
 const Navigation = ({ onNavigate }) => {
   return (
     <nav className="navigation-bar">
+      <button onClick={() => onNavigate('home')}>Inicio</button>
       <button onClick={() => onNavigate('hoteles')}>Hoteles</button>
       <button onClick={() => onNavigate('clientes')}>Clientes</button>
       <button onClick={() => onNavigate('reservas')}>Reservas</button>

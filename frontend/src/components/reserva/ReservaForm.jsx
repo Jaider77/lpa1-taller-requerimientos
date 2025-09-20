@@ -12,24 +12,47 @@ const ReservaForm = ({ onReservaAdded }) => {
     precio_total: ''
   });
   const [clientes, setClientes] = useState([]);
+  const [hoteles, setHoteles] = useState([]);
   const [habitaciones, setHabitaciones] = useState([]);
+  const [selectedHotelId, setSelectedHotelId] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchDependencies = async () => {
+    const fetchInitialData = async () => {
       try {
         const clientesRes = await axios.get('http://127.0.0.1:5000/clientes');
-        const habitacionesRes = await axios.get('http://127.0.0.1:5000/habitaciones');
+        const hotelesRes = await axios.get('http://127.0.0.1:5000/hoteles');
         setClientes(clientesRes.data);
-        setHabitaciones(habitacionesRes.data);
+        setHoteles(hotelesRes.data);
       } catch (err) {
-        setError('Error al cargar clientes y habitaciones.');
+        setError('Error al cargar clientes y hoteles.');
         console.error(err);
       }
     };
-    fetchDependencies();
+    fetchInitialData();
   }, []);
+
+  const fetchHabitacionesPorHotel = async (hotelId) => {
+    try {
+      if (hotelId) {
+        const habitacionesRes = await axios.get(`http://127.0.0.1:5000/hoteles/${hotelId}/habitaciones`);
+        setHabitaciones(habitacionesRes.data);
+      } else {
+        setHabitaciones([]); // Limpiar la lista si no hay hotel seleccionado
+      }
+    } catch (err) {
+      setError('Error al cargar las habitaciones del hotel seleccionado.');
+      console.error(err);
+    }
+  };
+
+  const handleHotelChange = (e) => {
+    const hotelId = e.target.value;
+    setSelectedHotelId(hotelId);
+    setFormData({ ...formData, habitacion_id: '' }); // Limpiar la habitación al cambiar de hotel
+    fetchHabitacionesPorHotel(hotelId);
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,9 +71,11 @@ const ReservaForm = ({ onReservaAdded }) => {
         fecha_salida: '',
         precio_total: ''
       });
+      setSelectedHotelId('');
+      setHabitaciones([]);
       onReservaAdded();
     } catch (err) {
-      setError('Error al crear la reserva. Asegúrate de que los IDs existan.');
+      setError('Error al crear la reserva. Asegúrate de que los datos sean correctos.');
       setMessage('');
       console.error('Error en la petición:', err.response.data.error || err);
     }
@@ -69,9 +94,20 @@ const ReservaForm = ({ onReservaAdded }) => {
             ))}
           </select>
         </div>
+        
+        <div className="form-group">
+          <label>Hotel:</label>
+          <select name="hotel" value={selectedHotelId} onChange={handleHotelChange} required>
+            <option value="">Selecciona un hotel</option>
+            {hoteles.map(hotel => (
+              <option key={hotel.id} value={hotel.id}>{hotel.nombre}</option>
+            ))}
+          </select>
+        </div>
+        
         <div className="form-group">
           <label>Habitación:</label>
-          <select name="habitacion_id" value={formData.habitacion_id} onChange={handleChange} required>
+          <select name="habitacion_id" value={formData.habitacion_id} onChange={handleChange} required disabled={!selectedHotelId}>
             <option value="">Selecciona una habitación</option>
             {habitaciones.map(habitacion => (
               <option key={habitacion.id} value={habitacion.id}>
@@ -80,6 +116,7 @@ const ReservaForm = ({ onReservaAdded }) => {
             ))}
           </select>
         </div>
+        
         <div className="form-group">
           <label>Fecha de Entrada:</label>
           <input type="date" name="fecha_entrada" value={formData.fecha_entrada} onChange={handleChange} required />
@@ -92,6 +129,7 @@ const ReservaForm = ({ onReservaAdded }) => {
           <label>Precio Total:</label>
           <input type="number" name="precio_total" value={formData.precio_total} onChange={handleChange} required />
         </div>
+        
         <button type="submit">Crear Reserva</button>
       </form>
       {message && <p className="success-message">{message}</p>}

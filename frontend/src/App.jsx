@@ -11,7 +11,8 @@ import ClienteDetail from './components/cliente/ClienteDetail';
 import ReservaForm from './components/reserva/ReservaForm';
 import ReservaList from './components/reserva/ReservaList';
 import ReservaDetail from './components/reserva/ReservaDetail';
-import Navigation from './components/Navigation'; // Importa el componente de navegación
+import Navigation from './components/Navigation';
+import Home from './components/Home'; // Importa el nuevo componente Home
 import './App.css';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   const [selectedHotel, setSelectedHotel] = useState(null);
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [selectedReserva, setSelectedReserva] = useState(null);
-  const [currentView, setCurrentView] = useState('hoteles'); // Nuevo estado para la vista
+  const [currentView, setCurrentView] = useState('home'); // Cambia el estado inicial a 'home'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,10 +48,8 @@ function App() {
   const handleReservaUpdate = () => { fetchReservas(); setSelectedReserva(null); };
   const handleReservaDelete = () => { fetchReservas(); setSelectedReserva(null); };
 
-  // Función para cambiar de vista
   const handleNavigate = (view) => {
     setCurrentView(view);
-    // Reinicia las selecciones al cambiar de vista
     setSelectedHotel(null);
     setSelectedCliente(null);
     setSelectedReserva(null);
@@ -61,6 +60,8 @@ function App() {
 
   const renderView = () => {
     switch (currentView) {
+      case 'home':
+        return <Home />;
       case 'hoteles':
         return selectedHotel ? (
           <HotelDetail hotel={selectedHotel} onUpdate={handleHotelUpdate} onDelete={handleHotelDelete} onBack={() => setSelectedHotel(null)} />
@@ -106,6 +107,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;
