@@ -117,7 +117,7 @@ function App() {
   const renderView = () => {
     switch (currentView) {
       case 'home':
-        return <Home />;
+        return <Home hoteles={hoteles} onSelectHotel={handleSelectHotel} />;
       case 'hoteles':
         return selectedHotel ? (
           <HotelDetail hotel={selectedHotel} onUpdate={handleHotelUpdate} onDelete={handleHotelDelete} onBack={() => setSelectedHotel(null)} />
