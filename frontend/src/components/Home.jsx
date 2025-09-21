@@ -2,28 +2,52 @@
 
 import React from 'react';
 
-const Home = ({ hoteles, onSelectHotel }) => {
+const Home = ({ onSelectHotel }) => {
+  // Datos de hoteles con la ruta de la imagen, ahora dentro del componente Home
+   const hoteles = [
+    { id: 1, nombre: 'Hotel El Paraíso de Aruba', direccion: 'Palm Beach, Aruba', imagen: 'aruba.png' },
+    { id: 2, nombre: 'Resort de las Bahamas', direccion: 'Paradise Island, Bahamas', imagen: 'bahamas.png' },
+    { id: 3, nombre: 'Cancún Sol', direccion: 'Avenida Sol Naciente, Cancún, México', imagen: 'cancun.png' },
+    { id: 4, nombre: 'Paraíso Hawaiano', direccion: 'Oahu, Hawái, Estados Unidos', imagen: 'hawaii.png' },
+    { id: 5, nombre: 'Jamaica Dreams', direccion: 'Negril, Jamaica', imagen: 'jamaica.png' },
+    { id: 6, nombre: 'Hotel Madrid Real', direccion: 'Calle Mayor, 10, Madrid, España', imagen: 'madrid.png' },
+    { id: 7, nombre: 'Resort Miami', direccion: 'Ocean Drive, Miami Beach, Florida', imagen: 'miami.png' },
+    { id: 8, nombre: 'Hotel Moscu', direccion: 'Plaza Roja, Moscu, Rusia', imagen: 'moscu.png' },
+    { id: 9, nombre: 'New York Skyline View', direccion: 'Manhattan, Nueva York, Estados Unidos', imagen: 'newyork.png' },
+    { id: 10, nombre: 'Hotel Panamá', direccion: 'Panamá, Panamá', imagen: 'panama.png' },
+    { id: 11, nombre: 'Hotel La Vie en París', direccion: '10 Rue de la Paix, París, Francia', imagen: 'paris.png' },
+    { id: 12, nombre: 'El Coliseo Romano', direccion: 'Piazza del Colosseo, 1, Roma, Italia', imagen: 'rome.png' },
+    { id: 13, nombre: 'Seoul Dream', direccion: 'Gangnam-gu, Seúl, Corea del Sur', imagen: 'seul.png' },
+    { id: 14, nombre: 'Hotel de Sidney', direccion: 'Circular Quay, Sídney, Australia', imagen: 'sidney.png' },
+    { id: 15, nombre: 'Tokyo Skyline View', direccion: 'Shinjuku, Tokio, Japón', imagen: 'tokio.png' },
+    { id: 16, nombre: 'Taipei Nights', direccion: 'Distrito de Xinyi, Taipéi, Taiwán', imagen: 'taipei.png' },
+  ];
+
   return (
     <div className="home-container">
       <h2>¡Bienvenido a la Gestión de Hoteles de Clase Mundial!</h2>
       <p>
-        Optimiza la administración de tus propiedades, clientes y reservas con nuestra plataforma intuitiva y poderosa. 
+        Optimiza la administración de tus propiedades, clientes y reservas con nuestra plataforma intuitiva y poderosa.
         Explora nuestros hoteles exclusivos a continuación:
       </p>
 
-      {/* Imagen de bienvenida animada */}
-      <img 
-        src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2680&auto=format&fit=crop" 
-        alt="Lobby de hotel moderno" 
-        className="home-main-image" 
-      />
-      
-      {/* Sección para mostrar los hoteles en el inicio */}
+      {/* Imagen principal en el home, su tamaño se ajusta en App.css */}
+      {/* Sección para mostrar la lista de hoteles en el inicio */}
       <div className="hotel-list-home">
         {hoteles.map(hotel => (
-          <div key={hotel.id} className="hotel-card" onClick={() => onSelectHotel(hotel)}>
-            {/* Si el hotel tiene una propiedad de imagen, la muestra */}
-            {hotel.imagen && <img src={`/images/static/${hotel.imagen}`} alt={hotel.nombre} />}
+          <div
+            key={hotel.id}
+            className="hotel-card"
+            onClick={() => onSelectHotel(hotel)}
+          >
+            {/* Muestra la imagen del hotel si la propiedad 'imagen' existe.
+                La ruta se construye dinámicamente para acceder al archivo. */}
+            {hotel.imagen && (
+              <img
+                src={`/images/static/${hotel.imagen}`}
+                alt={hotel.nombre}
+              />
+            )}
             <div className="hotel-card-info">
               <h3>{hotel.nombre}</h3>
               <p>{hotel.direccion}</p>

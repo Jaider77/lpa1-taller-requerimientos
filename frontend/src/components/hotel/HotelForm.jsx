@@ -4,16 +4,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const HotelForm = ({ onHotelAdded }) => {
+  // Estado para controlar la visibilidad del formulario
+  const [isOpen, setIsOpen] = useState(false);
+  
   const [formData, setFormData] = useState({
     nombre: '',
     direccion: '',
-    telefono: '',
-    correo: '',
-    ubicacion_geografica: '',
-    descripcion_servicios: ''
   });
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,57 +20,41 @@ const HotelForm = ({ onHotelAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/hotel', formData);
-      setMessage(response.data.mensaje);
-      setError('');
-      setFormData({
-        nombre: '',
-        direccion: '',
-        telefono: '',
-        correo: '',
-        ubicacion_geografica: '',
-        descripcion_servicios: ''
-      });
+      await axios.post('http://127.0.0.1:5000/hoteles', formData);
+      setMessage('Hotel agregado con éxito.');
+      setFormData({ nombre: '', direccion: '' });
       onHotelAdded();
-    } catch (err) {
-      setError('Error al crear el hotel. Verifica que los datos sean correctos.');
-      setMessage('');
-      console.error('Error en la petición:', err);
+    } catch (error) {
+      setMessage('Error al agregar el hotel.');
+      console.error("Error al agregar hotel:", error);
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>Agregar Nuevo Hotel</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Nombre:</label>
-          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+    <div className="form-toggle-container">
+      {/* Botón para alternar la visibilidad del formulario */}
+      <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Cerrar Formulario' : 'Crear Nuevo Hotel'}
+      </button>
+
+      {/* El formulario solo se renderiza si 'isOpen' es verdadero */}
+      {isOpen && (
+        <div className="form-container compact-form">
+          <h2>Agregar Nuevo Hotel</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre:</label>
+              <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label>Dirección:</label>
+              <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} required />
+            </div>
+            <button type="submit">Crear Hotel</button>
+          </form>
+          {message && <p className="success-message">{message}</p>}
         </div>
-        <div className="form-group">
-          <label>Dirección:</label>
-          <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Teléfono:</label>
-          <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Correo:</label>
-          <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Ubicación Geográfica:</label>
-          <input type="text" name="ubicacion_geografica" value={formData.ubicacion_geografica} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Descripción de Servicios:</label>
-          <textarea name="descripcion_servicios" value={formData.descripcion_servicios} onChange={handleChange} />
-        </div>
-        <button type="submit">Crear Hotel</button>
-      </form>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+      )}
     </div>
   );
 };

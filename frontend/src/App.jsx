@@ -15,6 +15,30 @@ import Navigation from './components/Navigation';
 import Home from './components/Home';
 import './App.css';
 
+
+// frontend/src/App.jsx
+
+// ... (inicio del archivo) ...
+
+const renderView = () => {
+    switch (currentView) {
+      // ... (casos 'home', 'hoteles' y 'clientes') ...
+      case 'reservas':
+        return selectedReserva ? (
+          <ReservaDetail reserva={selectedReserva} onUpdate={handleReservaUpdate} onDelete={handleReservaDelete} onBack={() => setSelectedReserva(null)} />
+        ) : (
+          <>
+            {/* Pasa la lista de hoteles como prop */}
+            <ReservaForm onReservaAdded={fetchReservas} hoteles={hoteles} />
+            <ReservaList reservas={reservas} onSelectReserva={handleSelectReserva} />
+          </>
+        );
+      default:
+        return <div>Selecciona una opción de navegación.</div>;
+    }
+};
+
+// ... (resto del archivo) ...
 function App() {
   const [hoteles, setHoteles] = useState([]);
   const [clientes, setClientes] = useState([]);

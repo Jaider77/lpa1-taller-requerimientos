@@ -1,17 +1,19 @@
-// frontend/src/components/cliente/ClienteForm.jsx
+// frontend/src/components/client/ClientForm.jsx
 
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ClienteForm = ({ onClienteAdded }) => {
+const ClientForm = ({ onClientAdded }) => {
+  // Estado para controlar la visibilidad del formulario
+  const [isOpen, setIsOpen] = useState(false);
+  
   const [formData, setFormData] = useState({
-    nombre_completo: '',
+    nombre: '',
     telefono: '',
     correo: '',
-    direccion: ''
+    ubicacion: '',
   });
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,49 +22,51 @@ const ClienteForm = ({ onClienteAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/cliente', formData);
-      setMessage(response.data.mensaje);
-      setError('');
-      setFormData({
-        nombre_completo: '',
-        telefono: '',
-        correo: '',
-        direccion: ''
-      });
-      onClienteAdded();
-    } catch (err) {
-      setError('Error al crear el cliente. Verifica que el correo sea único.');
-      setMessage('');
-      console.error('Error en la petición:', err);
+      await axios.post('http://127.0.0.1:5000/clientes', formData);
+      setMessage('Cliente agregado con éxito.');
+      setFormData({ nombre: '', telefono: '', correo: '', ubicacion: '' });
+      onClientAdded(); // Función para refrescar la lista de clientes
+    } catch (error) {
+      setMessage('Error al agregar el cliente.');
+      console.error("Error al agregar cliente:", error);
     }
   };
 
   return (
-    <div className="form-container">
-      <h2>Agregar Nuevo Cliente</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Nombre Completo:</label>
-          <input type="text" name="nombre_completo" value={formData.nombre_completo} onChange={handleChange} required />
+    <div className="form-toggle-container">
+      {/* Botón para alternar la visibilidad del formulario */}
+      <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Cerrar Formulario' : 'Crear Nuevo Cliente'}
+      </button>
+
+      {/* El formulario solo se renderiza si 'isOpen' es verdadero */}
+      {isOpen && (
+        <div className="form-container compact-form">
+          <h2>Agregar Nuevo Cliente</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre:</label>
+              <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+            </div>
+            <div className="form-group">
+              <label>Teléfono:</label>
+              <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Correo:</label>
+              <input type="email" name="correo" value={formData.correo} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Ubicación Geográfica:</label>
+              <input type="text" name="ubicacion" value={formData.ubicacion} onChange={handleChange} />
+            </div>
+            <button type="submit">Crear Cliente</button>
+          </form>
+          {message && <p className="success-message">{message}</p>}
         </div>
-        <div className="form-group">
-          <label>Teléfono:</label>
-          <input type="text" name="telefono" value={formData.telefono} onChange={handleChange} />
-        </div>
-        <div className="form-group">
-          <label>Correo:</label>
-          <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Dirección:</label>
-          <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} />
-        </div>
-        <button type="submit">Crear Cliente</button>
-      </form>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+      )}
     </div>
   );
 };
 
-export default ClienteForm;
+export default ClientForm;

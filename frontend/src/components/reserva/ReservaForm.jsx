@@ -1,141 +1,81 @@
-// frontend/src/components/reserva/ReservaForm.jsx
+// frontend/src/components/reservation/ReservationForm.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-const ReservaForm = ({ onReservaAdded }) => {
+const ReservationForm = ({ onReservationAdded }) => {
+  // Estado para controlar la visibilidad del formulario
+  const [isOpen, setIsOpen] = useState(false);
+
   const [formData, setFormData] = useState({
-    cliente_id: '',
-    habitacion_id: '',
+    cliente: '',
+    hotel: '',
+    habitacion: '',
     fecha_entrada: '',
     fecha_salida: '',
-    precio_total: ''
+    precio: '',
   });
-  const [clientes, setClientes] = useState([]);
-  const [hoteles, setHoteles] = useState([]);
-  const [habitaciones, setHabitaciones] = useState([]);
-  const [selectedHotelId, setSelectedHotelId] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const clientesRes = await axios.get('http://127.0.0.1:5000/clientes');
-        const hotelesRes = await axios.get('http://127.0.0.1:5000/hoteles');
-        setClientes(clientesRes.data);
-        setHoteles(hotelesRes.data);
-      } catch (err) {
-        setError('Error al cargar clientes y hoteles.');
-        console.error(err);
-      }
-    };
-    fetchInitialData();
-  }, []);
-
-  const fetchHabitacionesPorHotel = async (hotelId) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      if (hotelId) {
-        const habitacionesRes = await axios.get(`http://127.0.0.1:5000/hoteles/${hotelId}/habitaciones`);
-        setHabitaciones(habitacionesRes.data);
-      } else {
-        setHabitaciones([]); // Limpiar la lista si no hay hotel seleccionado
-      }
-    } catch (err) {
-      setError('Error al cargar las habitaciones del hotel seleccionado.');
-      console.error(err);
+      await axios.post('http://127.0.0.1:5000/reservas', formData);
+      // Lógica para mostrar mensaje de éxito y limpiar formulario
+      setFormData({
+        cliente: '', hotel: '', habitacion: '', fecha_entrada: '', fecha_salida: '', precio: ''
+      });
+      onReservationAdded();
+    } catch (error) {
+      console.error("Error al crear la reserva:", error);
     }
-  };
-
-  const handleHotelChange = (e) => {
-    const hotelId = e.target.value;
-    setSelectedHotelId(hotelId);
-    setFormData({ ...formData, habitacion_id: '' }); // Limpiar la habitación al cambiar de hotel
-    fetchHabitacionesPorHotel(hotelId);
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/reserva', formData);
-      setMessage(response.data.mensaje);
-      setError('');
-      setFormData({
-        cliente_id: '',
-        habitacion_id: '',
-        fecha_entrada: '',
-        fecha_salida: '',
-        precio_total: ''
-      });
-      setSelectedHotelId('');
-      setHabitaciones([]);
-      onReservaAdded();
-    } catch (err) {
-      setError('Error al crear la reserva. Asegúrate de que los datos sean correctos.');
-      setMessage('');
-      console.error('Error en la petición:', err.response.data.error || err);
-    }
-  };
-
   return (
-    <div className="form-container">
-      <h2>Crear Nueva Reserva</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Cliente:</label>
-          <select name="cliente_id" value={formData.cliente_id} onChange={handleChange} required>
-            <option value="">Selecciona un cliente</option>
-            {clientes.map(cliente => (
-              <option key={cliente.id} value={cliente.id}>{cliente.nombre_completo}</option>
-            ))}
-          </select>
+    <div className="form-toggle-container">
+      {/* Botón para alternar la visibilidad del formulario */}
+      <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
+        {isOpen ? 'Cerrar Formulario' : 'Crear Nueva Reserva'}
+      </button>
+
+      {/* El formulario solo se renderiza si 'isOpen' es verdadero */}
+      {isOpen && (
+        <div className="form-container compact-form">
+          <h2>Crear Nueva Reserva</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Cliente:</label>
+              <input type="text" name="cliente" value={formData.cliente} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Hotel:</label>
+              <input type="text" name="hotel" value={formData.hotel} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Habitación:</label>
+              <input type="text" name="habitacion" value={formData.habitacion} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Fecha de Entrada:</label>
+              <input type="date" name="fecha_entrada" value={formData.fecha_entrada} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Fecha de Salida:</label>
+              <input type="date" name="fecha_salida" value={formData.fecha_salida} onChange={handleChange} />
+            </div>
+            <div className="form-group">
+              <label>Precio Total:</label>
+              <input type="number" name="precio" value={formData.precio} onChange={handleChange} />
+            </div>
+            <button type="submit">Crear Reserva</button>
+          </form>
         </div>
-        
-        <div className="form-group">
-          <label>Hotel:</label>
-          <select name="hotel" value={selectedHotelId} onChange={handleHotelChange} required>
-            <option value="">Selecciona un hotel</option>
-            {hoteles.map(hotel => (
-              <option key={hotel.id} value={hotel.id}>{hotel.nombre}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div className="form-group">
-          <label>Habitación:</label>
-          <select name="habitacion_id" value={formData.habitacion_id} onChange={handleChange} required disabled={!selectedHotelId}>
-            <option value="">Selecciona una habitación</option>
-            {habitaciones.map(habitacion => (
-              <option key={habitacion.id} value={habitacion.id}>
-                Tipo: {habitacion.tipo} - Precio: ${habitacion.precio_base}
-              </option>
-            ))}
-          </select>
-        </div>
-        
-        <div className="form-group">
-          <label>Fecha de Entrada:</label>
-          <input type="date" name="fecha_entrada" value={formData.fecha_entrada} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Fecha de Salida:</label>
-          <input type="date" name="fecha_salida" value={formData.fecha_salida} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Precio Total:</label>
-          <input type="number" name="precio_total" value={formData.precio_total} onChange={handleChange} required />
-        </div>
-        
-        <button type="submit">Crear Reserva</button>
-      </form>
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
+      )}
     </div>
   );
 };
 
-export default ReservaForm;
+export default ReservationForm;

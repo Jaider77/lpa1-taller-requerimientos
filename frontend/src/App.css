@@ -78,16 +78,77 @@ h1 {
 /* ================================ */
 /* 3. Contenedores de Sección */
 /* ================================ */
-
 .section {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  align-items: center;
-  padding: 0 20px;
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    /* ELIMINA ESTO: */
+    /* width: 100%;
+    max-width: 800px;
+    margin: 0 auto; */
 }
 
+/* Y AÑADE ESTO: */
+.section .list-container,
+.section .form-container,
+.section .detail-container {
+    width: 100%;
+    max-width: 1200px; /* O el ancho que prefieras, para un diseño más limpio */
+    margin: 0 auto;
+}
+
+.section .list-container {
+    /* Aquí puedes ajustar el ancho máximo de la lista de tarjetas si quieres */
+    max-width: 1200px;
+}
+/* ================================ */
+/* 4. Estilos de Formularios */
+/* ================================ */
+
+/* Contenedor del formulario desplegable */
+.form-toggle-container {
+  width: 100%;
+  max-width: 800px; /* Ancho máximo para el contenedor */
+  margin: 20px auto;
+  text-align: center;
+}
+
+/* Estilo para el botón de alternar visibilidad */
+.toggle-button {
+  background-color: #3ebdf0;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.toggle-button:hover {
+  background-color: #2a9fd6;
+}
+
+/* Estilo para el formulario compacto */
+.compact-form {
+  padding: 20px; /* Reduce el padding para hacerlo más pequeño */
+  margin-top: 15px; /* Espacio entre el botón y el formulario */
+}
+
+.compact-form h2 {
+  font-size: 1.5em; /* Reduce el tamaño del título */
+  margin-bottom: 20px;
+}
+
+.compact-form .form-group label {
+  font-size: 0.9em; /* Reduce el tamaño de la etiqueta */
+}
+
+/* Estilo para el formulario de hotel */
 .form-container, .list-container, .detail-container {
   background-color: #1e1e1e;
   padding: 30px;
@@ -99,11 +160,6 @@ h1 {
   margin: 0 auto;
   color: #f0f0f0;
 }
-
-/* ================================ */
-/* 4. Estilos de Formularios */
-/* ================================ */
-
 .form-group {
   margin-bottom: 20px;
   text-align: left;
@@ -271,7 +327,7 @@ button:hover {
 /* Modificamos el estilo de la imagen para que sea más pequeña */
 .home-main-image {
   width: 80%; /* Reduce el ancho de la imagen */
-  max-width: 600px; /* Establece un tamaño máximo más razonable */
+  max-width: 800px; /* Establece un tamaño máximo más razonable */
   margin: 40px auto; /* Centra la imagen y le da un margen */
   display: block; /* Asegura que la imagen sea un bloque para que el margen funcione */
   border-radius: 15px;
@@ -315,9 +371,13 @@ button:hover {
     max-width: 1200px;
     padding: 0 20px;
 }
+/* frontend/src/App.css */
 
+/* ... (mantén el resto de tu CSS) ... */
+
+/* Estilo para la imagen en la página de detalles del hotel */
 .hotel-image-detail {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
   border-radius: 8px;
   margin-top: 20px;

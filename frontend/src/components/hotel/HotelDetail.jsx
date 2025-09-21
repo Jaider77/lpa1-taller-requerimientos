@@ -3,29 +3,43 @@
 import React from 'react';
 
 const HotelDetail = ({ hotel, onUpdate, onDelete, onBack }) => {
-  // Función de manejo de la eliminación
-  const handleDelete = () => {
-    // Aquí iría la lógica para eliminar el hotel de la base de datos
+  if (!hotel) {
+    return <div>Selecciona un hotel para ver los detalles.</div>;
+  }
+
+  // Si tienes más datos en tu backend (teléfono, correo, etc.),
+  // puedes agregarlos aquí para mostrarlos.
+  const { id, nombre, direccion, imagen } = hotel;
+
+  const handleDelete = async () => {
+    // Lógica para eliminar el hotel...
     onDelete();
   };
 
   return (
     <div className="detail-container">
-      <button onClick={onBack}>Volver a la lista</button>
+      <h2>Detalles de {nombre}</h2>
       
-      <h2>Detalles de {hotel.nombre}</h2>
-      {/* Muestra la imagen */}
-      <img 
-        src={`/images/${hotel.imagen}`} 
-        alt={hotel.nombre} 
-        className="hotel-image-detail"
-      />
+      {/* Sección para mostrar la imagen del hotel */}
+      {imagen && (
+        <img 
+          src={`/images/static/${imagen}`} 
+          alt={nombre} 
+          className="hotel-image-detail"
+        />
+      )}
       
-      <p><strong>Dirección:</strong> {hotel.direccion}</p>
-      {/* Puedes añadir más detalles aquí si los necesitas en el futuro */}
+      <p><strong>Dirección:</strong> {direccion}</p>
       
-      <div className="detail-actions">
-        <button onClick={onUpdate}>Editar</button>
+      {/* Si tu backend o lista de hoteles tuviera más datos,
+          los mostrarías aquí, por ejemplo:
+      <p><strong>Teléfono:</strong> {hotel.telefono}</p>
+      <p><strong>Correo:</strong> {hotel.correo}</p>
+      <p><strong>Descripción:</strong> {hotel.descripcion}</p> */}
+
+      <div className="button-group">
+        <button onClick={() => onBack()}>Volver a la lista</button>
+        <button onClick={() => alert('Función de edición aún no implementada')}>Editar</button>
         <button onClick={handleDelete}>Eliminar</button>
       </div>
     </div>
