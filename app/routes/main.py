@@ -3,7 +3,6 @@ from flask import request, jsonify
 import datetime
 from flask import Blueprint, request, jsonify
 from app import db
-from app.models import cliente
 from app.models.hotel import Hotel
 from app.models.habitacion import Habitacion
 from app.models.cliente import Cliente
@@ -11,9 +10,8 @@ from app.models.reserva import Reserva
 from app.models.comentario import Comentario
 
 main = Blueprint('main', __name__)
-# --- OPERACIONES CRUD PARA HOTELES ---
 
-# Crear un hotel (CREATE)
+# --- OPERACIONES CRUD PARA HOTELES ---
 @main.route('/hotel', methods=['POST'])
 def crear_hotel():
     data = request.json
@@ -29,18 +27,6 @@ def crear_hotel():
     db.session.commit()
     return jsonify({'mensaje': 'Hotel creado con éxito'}), 201
 
-# Obtener todos los hoteles (READ ALL)
-# filepath: c:\Users\jaspr\OneDrive\Desktop\proyectos\lpa1-taller-requerimientos\app\routes\main.py
-# ...existing code...
-# In app/routes/main.py
-@main.route('/test')
-def test_route():
-    return 'Test route is working!', 200
-
-@main.route('/', methods=['GET'])
-def home():
-    return "API de Sistema de Reservas Hoteleras funcionando", 200
-# ...existing code...
 @main.route('/hoteles', methods=['GET'])
 def obtener_hoteles():
     hoteles = Hotel.query.all()
@@ -54,7 +40,6 @@ def obtener_hoteles():
         })
     return jsonify(lista_hoteles), 200
 
-# Obtener un hotel por ID (READ ONE)
 @main.route('/hotel/<int:hotel_id>', methods=['GET'])
 def obtener_hotel(hotel_id):
     hotel = Hotel.query.get_or_404(hotel_id)
@@ -65,6 +50,26 @@ def obtener_hotel(hotel_id):
         'descripcion_servicios': hotel.descripcion_servicios,
         'calificacion': hotel.calificacion_promedio
     }), 200
+
+@main.route('/hotel/<int:hotel_id>', methods=['PUT'])
+def actualizar_hotel(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    data = request.json
+    hotel.nombre = data.get('nombre', hotel.nombre)
+    hotel.direccion = data.get('direccion', hotel.direccion)
+    hotel.telefono = data.get('telefono', hotel.telefono)
+    hotel.correo = data.get('correo', hotel.correo)
+    hotel.ubicacion_geografica = data.get('ubicacion_geografica', hotel.ubicacion_geografica)
+    hotel.descripcion_servicios = data.get('descripcion_servicios', hotel.descripcion_servicios)
+    db.session.commit()
+    return jsonify({'mensaje': 'Hotel actualizado con exito'}), 200
+
+@main.route('/hotel/<int:hotel_id>', methods=['DELETE'])
+def eliminar_hotel(hotel_id):
+    hotel = Hotel.query.get_or_404(hotel_id)
+    db.session.delete(hotel)
+    db.session.commit()
+    return jsonify({'mensaje': 'Hotel eliminado con exito'}), 200
 
 # --- OPERACIONES CRUD PARA HABITACIONES ---
 @main.route('/habitacion', methods=['POST'])
@@ -99,29 +104,23 @@ def obtener_habitaciones():
         })
     return jsonify(lista_habitaciones), 200
 
-
 # --- OPERACIONES CRUD PARA RESERVAS --- 
 @main.route('/reserva', methods=['POST'])
 def crear_reserva():
     data = request.json
-    
-    # Valida los campos obligatorios
     required_fields = ['cliente_id', 'habitacion_id', 'fecha_entrada', 'fecha_salida', 'precio_total']
     if not all(field in data for field in required_fields):
         return jsonify({'error': 'Faltan datos obligatorios'}), 400
 
-    # Convierte las fechas de string a objetos date de Python
     try:
         fecha_entrada_obj = datetime.datetime.strptime(data['fecha_entrada'], '%Y-%m-%d').date()
         fecha_salida_obj = datetime.datetime.strptime(data['fecha_salida'], '%Y-%m-%d').date()
     except ValueError:
         return jsonify({'error': 'Formato de fecha incorrecto. Use YYYY-MM-DD.'}), 400
     
-    # Busca el cliente y la habitación
     cliente = Cliente.query.get_or_404(data['cliente_id'])
     habitacion = Habitacion.query.get_or_404(data['habitacion_id'])
 
-    # Crea la instancia de la reserva con los objetos de fecha
     nueva_reserva = Reserva(
         cliente_id=cliente.id,
         habitacion_id=habitacion.id,
@@ -132,10 +131,8 @@ def crear_reserva():
 
     db.session.add(nueva_reserva)
     db.session.commit()
-    
     return jsonify({'mensaje': 'Reserva creada con éxito'}), 201
 
-# Obtener todas las reservas (READ ALL)
 @main.route('/reservas', methods=['GET'])
 def obtener_reservas():
     reservas = Reserva.query.all()
@@ -183,17 +180,16 @@ def eliminar_reserva(reserva_id):
     return jsonify({'mensaje': 'Reserva eliminada con éxito'}), 200
 
 # --- OPERACIONES CRUD PARA CLIENTES ---
-
-@main.route('/cliente', methods=['POST'])
+@main.route('/clientes', methods=['POST'])
 def crear_cliente():
     data = request.json
     nuevo_cliente = Cliente(
+        # Nombres de campos actualizados para coincidir con los requisitos
         nombre_completo=data['nombre_completo'],
         telefono=data.get('telefono'),
         correo=data['correo'],
         direccion=data.get('direccion')
     )
-
     db.session.add(nuevo_cliente)
     db.session.commit()
     return jsonify({'mensaje': 'Cliente creado con éxito', 'id': nuevo_cliente.id}), 201
@@ -212,7 +208,6 @@ def obtener_clientes():
         })
     return jsonify(lista_clientes), 200
 
-# Obtener un cliente por ID
 @main.route('/cliente/<int:cliente_id>', methods=['GET'])
 def obtener_cliente_por_id(cliente_id):
     cliente = Cliente.query.get_or_404(cliente_id)
@@ -224,7 +219,6 @@ def obtener_cliente_por_id(cliente_id):
         'direccion': cliente.direccion
     }), 200
 
-# Actualizar un cliente por ID
 @main.route('/cliente/<int:cliente_id>', methods=['PUT'])
 def actualizar_cliente(cliente_id):
     cliente = Cliente.query.get_or_404(cliente_id)
@@ -236,16 +230,14 @@ def actualizar_cliente(cliente_id):
     db.session.commit()
     return jsonify({'mensaje': 'Cliente actualizado con éxito'}), 200
 
-# Eliminar un cliente por ID
 @main.route('/cliente/<int:cliente_id>', methods=['DELETE'])
 def eliminar_cliente(cliente_id):
     cliente = Cliente.query.get_or_404(cliente_id)
     db.session.delete(cliente)
     db.session.commit()
     return jsonify({'mensaje': 'Cliente eliminado con éxito'}), 200
+    
 # --- OPERACIONES CRUD PARA COMENTARIOS ---
-
-# Crear un comentario (CREATE)
 @main.route('/comentario', methods=['POST'])
 def crear_comentario():
     data = request.json
@@ -259,9 +251,7 @@ def crear_comentario():
     db.session.commit()
     return jsonify({'mensaje': 'Comentario registrado con éxito'}), 201
 
-
-
-# Obtener un hotel por ID (READ ONE)
+# Endpoint duplicado, se deja uno
 @main.route('/hotel/<int:hotel_id>', methods=['GET'])
 def obtener_hotel_por_id(hotel_id):
     hotel = Hotel.query.get_or_404(hotel_id)
@@ -274,25 +264,3 @@ def obtener_hotel_por_id(hotel_id):
         'ubicacion_geografica': hotel.ubicacion_geografica,
         'descripcion_servicios': hotel.descripcion_servicios
     }), 200
-
-# Actualizar un hotel por ID (UPDATE)
-@main.route('/hotel/<int:hotel_id>', methods=['PUT'])
-def actualizar_hotel(hotel_id):
-    hotel = Hotel.query.get_or_404(hotel_id)
-    data = request.json
-    hotel.nombre = data.get('nombre', hotel.nombre)
-    hotel.direccion = data.get('direccion', hotel.direccion)
-    hotel.telefono = data.get('telefono', hotel.telefono)
-    hotel.correo = data.get('correo', hotel.correo)
-    hotel.ubicacion_geografica = data.get('ubicacion_geografica', hotel.ubicacion_geografica)
-    hotel.descripcion_servicios = data.get('descripcion_servicios', hotel.descripcion_servicios)
-    db.session.commit()
-    return jsonify({'mensaje': 'Hotel actualizado con exito'}), 200
-
-# Eliminar un hotel por ID (DELETE)
-@main.route('/hotel/<int:hotel_id>', methods=['DELETE'])
-def eliminar_hotel(hotel_id):
-    hotel = Hotel.query.get_or_404(hotel_id)
-    db.session.delete(hotel)
-    db.session.commit()
-    return jsonify({'mensaje': 'Hotel eliminado con exito'}), 200

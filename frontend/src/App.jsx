@@ -1,6 +1,6 @@
 // frontend/src/App.jsx
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import HotelForm from './components/hotel/HotelForm';
 import HotelList from './components/hotel/HotelList';
@@ -11,7 +11,7 @@ import ClienteDetail from './components/cliente/ClienteDetail';
 import ReservaForm from './components/reserva/ReservaForm';
 import ReservaList from './components/reserva/ReservaList';
 import ReservaDetail from './components/reserva/ReservaDetail';
-import Navigation from './components/Navigation';
+import Header from './common/Header.jsx';
 import Home from './components/Home';
 import './App.css';
 
@@ -176,10 +176,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Gestión de Hoteles y Clientes</h1>
-        <Navigation onNavigate={handleNavigate} />
-      </header>
+      <Header onNavigate={handleNavigate} /> {/* Reemplazado aquí */}
       <main>
         <div className="section">
           {renderView()}
@@ -187,6 +184,7 @@ function App() {
       </main>
     </div>
   );
+
 }
 
 export default App;

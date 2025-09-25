@@ -1,4 +1,5 @@
 # TODO: desarrollar el sistema
+import sqlite3
 from app import app, db
 
 # Importar cada clase desde su módulo
@@ -12,3 +13,5 @@ from app.models.oferta import Oferta
 
 # O una forma más concisa:
 # from app.models import hotel, habitacion, cliente, reserva, ...
+
+# app.py

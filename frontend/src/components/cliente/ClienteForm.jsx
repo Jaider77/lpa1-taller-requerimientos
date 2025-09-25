@@ -3,15 +3,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Recibe la función 'onClientAdded' como una prop
 const ClientForm = ({ onClientAdded }) => {
-  // Estado para controlar la visibilidad del formulario
   const [isOpen, setIsOpen] = useState(false);
   
   const [formData, setFormData] = useState({
-    nombre: '',
+    nombre_completo: '',
     telefono: '',
     correo: '',
-    ubicacion: '',
+    direccion: '',
   });
   const [message, setMessage] = useState('');
 
@@ -24,8 +24,11 @@ const ClientForm = ({ onClientAdded }) => {
     try {
       await axios.post('http://127.0.0.1:5000/clientes', formData);
       setMessage('Cliente agregado con éxito.');
-      setFormData({ nombre: '', telefono: '', correo: '', ubicacion: '' });
-      onClientAdded(); // Función para refrescar la lista de clientes
+      setFormData({ nombre_completo: '', telefono: '', correo: '', direccion: '' });
+      
+      // Llama a la función que se le pasó como prop
+      onClientAdded(); 
+
     } catch (error) {
       setMessage('Error al agregar el cliente.');
       console.error("Error al agregar cliente:", error);
@@ -34,19 +37,17 @@ const ClientForm = ({ onClientAdded }) => {
 
   return (
     <div className="form-toggle-container">
-      {/* Botón para alternar la visibilidad del formulario */}
       <button className="toggle-button" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? 'Cerrar Formulario' : 'Crear Nuevo Cliente'}
       </button>
 
-      {/* El formulario solo se renderiza si 'isOpen' es verdadero */}
       {isOpen && (
         <div className="form-container compact-form">
           <h2>Agregar Nuevo Cliente</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Nombre:</label>
-              <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+              <label>Nombre Completo:</label>
+              <input type="text" name="nombre_completo" value={formData.nombre_completo} onChange={handleChange} required />
             </div>
             <div className="form-group">
               <label>Teléfono:</label>
@@ -57,8 +58,8 @@ const ClientForm = ({ onClientAdded }) => {
               <input type="email" name="correo" value={formData.correo} onChange={handleChange} />
             </div>
             <div className="form-group">
-              <label>Ubicación Geográfica:</label>
-              <input type="text" name="ubicacion" value={formData.ubicacion} onChange={handleChange} />
+              <label>Dirección:</label>
+              <input type="text" name="direccion" value={formData.direccion} onChange={handleChange} />
             </div>
             <button type="submit">Crear Cliente</button>
           </form>
