@@ -1,41 +1,61 @@
 // frontend/src/components/hotel/HotelList.jsx
+// ESTE COMPONENTE AHORA SOLO MUESTRA HOTELES (no destinos)
 
 import React from 'react';
 
-const HotelList = ({ onSelectHotel }) => {
-  // Datos de hoteles con la ruta de la imagen
-   const hoteles = [
-    { id: 1, nombre: 'Aruba', direccion: 'Palm Beach, Aruba', imagen: 'aruba.png' },
-    { id: 2, nombre: 'Bahamas', direccion: 'Paradise Island, Bahamas', imagen: 'bahamas.png' },
-    { id: 3, nombre: 'Cancún', direccion: 'Avenida Sol Naciente, Cancún, México', imagen: 'cancun.png' },
-    { id: 4, nombre: 'Hawái', direccion: 'Oahu, Hawái, Estados Unidos', imagen: 'hawaii.png' },
-    { id: 5, nombre: 'Jamaica', direccion: 'Negril, Jamaica', imagen: 'jamaica.png' },
-    { id: 6, nombre: 'Madrid', direccion: 'Calle Mayor, 10, Madrid, España', imagen: 'madrid.png' },
-    { id: 7, nombre: 'Miami', direccion: 'Ocean Drive, Miami Beach, Florida', imagen: 'miami.png' },
-    { id: 8, nombre: 'Moscú', direccion: 'Plaza Roja, Moscú, Rusia', imagen: 'moscu.png' },
-    { id: 9, nombre: 'Nueva York', direccion: 'Manhattan, Nueva York, Estados Unidos', imagen: 'newyork.png' },
-    { id: 10, nombre: 'Panamá', direccion: 'Panamá, Panamá', imagen: 'panama.png' },
-    { id: 11, nombre: 'París', direccion: '10 Rue de la Paix, París, Francia', imagen: 'paris.png' },
-    { id: 12, nombre: 'Roma', direccion: 'Piazza del Colosseo, 1, Roma, Italia', imagen: 'rome.png' },
-    { id: 13, nombre: 'Seúl', direccion: 'Gangnam-gu, Seúl, Corea del Sur', imagen: 'seul.png' },
-    { id: 14, nombre: 'Sídney', direccion: 'Circular Quay, Sídney, Australia', imagen: 'sidney.png' },
-    { id: 15, nombre: 'Tokio', direccion: 'Shinjuku, Tokio, Japón', imagen: 'tokio.png' },
-    { id: 16, nombre: 'Taipéi', direccion: 'Distrito de Xinyi, Taipéi, Taiwán', imagen: 'taipei.png' },
-  ];
+// Datos de hoteles organizados por destino
+const HOTELES_POR_DESTINO = [
+    // --- Hoteles de Aruba ---
+    { id: 101, nombre: 'Aruba Breeze Hotel', destino: 'Aruba', habitaciones_disponibles: 15, imagen: 'aruba_breeze.jpg' },
+    { id: 102, nombre: 'The Palm Paradise', destino: 'Aruba', habitaciones_disponibles: 5, imagen: 'palm_paradise.jpg' },
+    
+    // --- Hoteles de Cancún ---
+    { id: 301, nombre: 'Sunrise Resort Cancún', destino: 'Cancún', habitaciones_disponibles: 30, imagen: 'cancun_sunrise.jpg' },
+    { id: 302, nombre: 'Mayan Luxury', destino: 'Cancún', habitaciones_disponibles: 0, imagen: 'cancun_mayan.jpg' }, // Ejemplo sin habitaciones
+    
+    // --- Hoteles de Madrid ---
+    { id: 601, nombre: 'Central Suites Madrid', destino: 'Madrid', habitaciones_disponibles: 8, imagen: 'madrid_suites.jpg' },
+    { id: 602, nombre: 'Hostal Puerta del Sol', destino: 'Madrid', habitaciones_disponibles: 22, imagen: 'madrid_hostal.jpg' },
+    
+    // Agrega más hoteles para el resto de tus destinos según los necesites...
+];
+
+const HotelList = ({ destinoSeleccionado, onSelectHotel }) => {
+  
+  // Filtramos la lista de hoteles solo para el destino que el usuario seleccionó
+  const hotelesFiltrados = HOTELES_POR_DESTINO.filter(h => h.destino === destinoSeleccionado);
 
   return (
     <div className="list-container">
-      <h2>Lista de Hoteles</h2>
       <div className="hotel-list">
-        {hoteles.map(hotel => (
-          <div key={hotel.id} className="hotel-card" onClick={() => onSelectHotel(hotel)}>
-            <img src={`/images/static/${hotel.imagen}`} alt={hotel.nombre} />
-            <div className="hotel-card-info">
-              <h3>{hotel.nombre}</h3>
-              <p>{hotel.direccion}</p>
+        {hotelesFiltrados.length === 0 ? (
+          <p>Aún no hay hoteles cargados para el destino: {destinoSeleccionado}</p>
+        ) : (
+          hotelesFiltrados.map(hotel => (
+            <div 
+              key={hotel.id} 
+              className="hotel-card" 
+              onClick={() => onSelectHotel(hotel)}
+            >
+              <img 
+                src={`/images/static/${hotel.imagen}`} 
+                alt={hotel.nombre} 
+                className="hotel-image" 
+              />
+              <div className="hotel-card-info">
+                <h3>{hotel.nombre}</h3>
+                
+                {/* Habitaciones Disponibles */}
+                <p className="rooms-info">
+                  <i className="bi bi-door-open-fill"></i> Habitaciones disponibles: 
+                  <span className={hotel.habitaciones_disponibles > 0 ? 'available' : 'unavailable'}>
+                    {hotel.habitaciones_disponibles}
+                  </span>
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

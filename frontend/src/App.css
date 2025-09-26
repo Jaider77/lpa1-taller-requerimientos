@@ -31,12 +31,15 @@ body {
 
 .App-header {
   background-color: transparent; /* Fondo transparente para que el degradado del body se vea */
-  padding: 20px 0;
+  padding: 1rem 4rem; /* Ajustado para dar más espacio en los costados */
   margin-bottom: 0;
   text-align: center;
   color: white;
   position: relative;
   z-index: 10;
+  display: flex; /* Añadido para alinear el título y la nav horizontalmente */
+  justify-content: space-between; /* Espacia el título y la nav */
+  align-items: center; /* Centra verticalmente */
 }
 
 h1 {
@@ -64,6 +67,14 @@ h1 {
   font-size: 1em;
   font-weight: bold;
   text-transform: uppercase;
+  /* Estilos para el ícono y texto */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el ícono y el texto */
+}
+
+.navigation-bar button i {
+    font-size: 1.2em; /* Tamaño del ícono */
 }
 
 .navigation-bar button:hover {
@@ -77,7 +88,7 @@ h1 {
 }
 
 /* ================================ */
-/* 3. Contenedores de Sección */
+/* 3. Contenedores de Sección y VISTAS PERSONALIZADAS */
 /* ================================ */
 .section {
     display: flex;
@@ -86,23 +97,36 @@ h1 {
     align-items: center;
     padding: 0 20px;
     box-sizing: border-box;
-    /* ELIMINA ESTO: */
-    /* width: 100%;
-    max-width: 800px;
-    margin: 0 auto; */
+}
+/* Estilo para la vista Cliente (Formulario + Lista al lado) */
+.clientes-view {
+    display: flex; /* Mantiene el diseño horizontal */
+    flex-direction: row; /* Asegura que sea horizontal */
+    gap: 40px; /* Espacio entre Formulario y Lista */
+    padding: 20px 40px;
+    width: 100%;
+    max-width: 1400px; /* Aumenta este valor si quieres que la vista sea más ancha */
+    align-items: flex-start;
+    margin: 0 auto; /* Centra la vista en el contenido principal */
 }
 
-/* Y AÑADE ESTO: */
+.clientes-view > .form-container {
+    flex: 0 0 350px; /* Ancho fijo para el formulario */
+}
+
+.clientes-view > .list-container {
+    flex-grow: 1; /* La lista ocupa el espacio restante */
+}
+
 .section .list-container,
 .section .form-container,
 .section .detail-container {
     width: 100%;
-    max-width: 1200px; /* O el ancho que prefieras, para un diseño más limpio */
+    max-width: 1200px; /* Ancho general máximo para contenido principal */
     margin: 0 auto;
 }
 
 .section .list-container {
-    /* Aquí puedes ajustar el ancho máximo de la lista de tarjetas si quieres */
     max-width: 1200px;
 }
 /* ================================ */
@@ -215,12 +239,30 @@ button:hover {
   transform: translateY(-2px);
 }
 
+/* Estilo del botón 'Volver' en la vista de detalle */
+.back-button {
+    background: none;
+    color: #3ebdf0;
+    border: 1px solid #3ebdf0;
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.back-button:hover {
+    background-color: #3ebdf020;
+    transform: none;
+}
+
+
 /* ================================ */
-/* 6. Estilos de las Tarjetas (Hoteles, Clientes, Reservas) */
+/* 6. Estilos de las Tarjetas y Destinos */
 /* ================================ */
 
 /* Estilo para la cuadrícula de tarjetas */
-.hotel-list, .client-list, .reserva-list {
+.hotel-list, .client-list, .reserva-list, .destination-grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
@@ -229,8 +271,13 @@ button:hover {
   width: 100%;
 }
 
-/* Estilo base para cada tarjeta */
-.hotel-card, .client-card, .reserva-card {
+/* Contenedor general de la lista de hoteles (ahora destinos) */
+.destination-grid-container {
+    margin-top: 20px;
+}
+
+/* Estilo base para cada tarjeta (Hoteles, Clientes, Reservas) */
+.hotel-card, .client-card, .reserva-card, .destination-card {
   background-color: #2a2a2a;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -239,39 +286,81 @@ button:hover {
   cursor: pointer;
   padding: 20px;
   text-align: left;
-  display: flex; /* Flexbox para organizar el contenido */
+  display: flex; 
   flex-direction: column;
 }
 
-.hotel-card:hover, .client-card:hover, .reserva-card:hover {
+.hotel-card:hover, .client-card:hover, .reserva-card:hover, .destination-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
+/* Estilos específicos para las tarjetas de DESTINO */
+.destination-card {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 150px;
+    border: 2px solid #3ebdf0; /* Resaltar la tarjeta de destino */
+}
+
+.destination-card i {
+    font-size: 2.5em;
+    color: #3ebdf0;
+    margin-top: 10px;
+}
+
 /* Estilos específicos para la imagen en la tarjeta de hotel */
-.hotel-card img {
+.hotel-image {
   width: 100%;
   height: 200px; /* Altura fija para las imágenes */
   object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 /* Contenido de texto en la tarjeta */
 .hotel-card-info {
-  padding: 15px;
+  padding: 15px 0; /* Ajustamos el padding */
   text-align: left;
 }
 
-.hotel-card-info h3, .client-card h3, .reserva-card h3 {
+.hotel-card-info h3, .client-card h3, .reserva-card h3, .destination-card h3 {
   margin: 0 0 5px 0;
   font-size: 1.2em;
   color: #fff;
 }
 
-.hotel-card-info p, .client-card p, .reserva-card p {
+.hotel-card-info p, .client-card p, .reserva-card p, .destination-card p {
   margin: 0;
   font-size: 0.9em;
   color: #bbb;
 }
+
+/* Estilos para Habitaciones en HotelList */
+.rooms-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+    margin-top: 10px;
+    color: #ddd;
+}
+
+.rooms-info i {
+    color: #3ebdf0;
+}
+
+.rooms-info .available {
+    color: #4CAF50; /* Verde para disponible */
+    font-weight: bold;
+}
+
+.rooms-info .unavailable {
+    color: #f44336; /* Rojo para no disponible */
+    font-weight: bold;
+}
+
 
 /* ================================ */
 /* 7. Mensajes de Estado */
@@ -290,12 +379,6 @@ button:hover {
 }
 
 /* ================================ */
-/* 8. Estilos de la Página de Inicio */
-/* ================================ */
-/* frontend/src/App.css */
-
-/* ... (mantén el resto de tu CSS anterior) ... */
-
 /* 8. Estilos de la Página de Inicio */
 /* ================================ */
 
@@ -336,33 +419,6 @@ button:hover {
   animation: fadeIn 2s ease-in-out;
 }
 
-/* ... (mantén el resto de tus estilos CSS) ... */
-.home-container {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 50px 20px;
-  background-color: transparent;
-  box-shadow: none;
-}
-
-.home-container h2 {
-  font-size: 3em;
-  color: #fff;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.home-container p {
-  font-size: 1.2em;
-  color: #ddd;
-  max-width: 700px;
-  line-height: 1.6;
-}
-
 .hotel-list-home {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -372,9 +428,6 @@ button:hover {
     max-width: 1200px;
     padding: 0 20px;
 }
-/* frontend/src/App.css */
-
-/* ... (mantén el resto de tu CSS) ... */
 
 /* Estilo para la imagen en la página de detalles del hotel */
 .hotel-image-detail {
