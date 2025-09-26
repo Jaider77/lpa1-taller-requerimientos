@@ -14,7 +14,7 @@ import ReservaDetail from './components/reserva/ReservaDetail';
 import Header from './common/Header.jsx';
 import Home from './components/Home';
 import './App.css';
-
+import { motion, AnimatePresence } from 'framer-motion';
 
 // frontend/src/App.jsx
 
@@ -174,9 +174,9 @@ function App() {
     }
   };
 
-  return (
+    return (
     <div className="App">
-      <Header onNavigate={handleNavigate} /> {/* Reemplazado aquí */}
+      <Header onNavigate={handleNavigate} currentView={currentView} /> {/* Pasa la vista actual */}
       <main>
         <div className="section">
           {renderView()}
@@ -185,6 +185,26 @@ function App() {
     </div>
   );
 
+return (
+  <div className="App">
+    <Header onNavigate={handleNavigate} currentView={currentView} />
+    <main>
+      <div className="section">
+        <AnimatePresence mode="wait"> {/* Espera a que el componente de salida termine su animación */}
+          <motion.div
+            key={currentView} // Clave única para cada vista
+            initial={{ opacity: 0, x: 20 }} // Animación de entrada (desde la derecha)
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }} // Animación de salida (hacia la izquierda)
+            transition={{ duration: 0.2 }}
+          >
+            {renderView()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </main>
+  </div>
+);
 }
 
 export default App;
