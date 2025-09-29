@@ -6,9 +6,9 @@
 - ver [badgen](https://badgen.net/) o [shields](https://shields.io/) para otros tipos de _badges_
 
 ## Autor
-  Jaider francisco Asprilla Reyes 
+  Jaider Francisco Asprilla Reyes 
 - [@estudiante](https://github.com/Jaider77)
-## estructura del proyecto 
+## Estructura del proyecto Backend
 .
 ├── app/
 │   ├── __init__.py
@@ -38,8 +38,6 @@ El Sistema de Reservas Hoteleras es una aplicación que permite a los usuarios b
 ## Documentación
 
 Revisar la documentación en [`./docs`](./docs)
-
-### Requerimientos
 
 ### Módulo de Hoteles y Habitaciones
 
@@ -102,22 +100,16 @@ Revisar la documentación en [`./docs`](./docs)
 |Taipei|912|220|245|298|
 |Tokio|989|189|231|255|
 
-# Activacion del entorno 
-.venv/Scripts/activate
-
 ## Instalación
  Corregir la explicación de la instalación - Morbi quam lectus, tempus sit amet mi non, facilisis dignissim erat. Aenean tortor libero, rhoncus eu eleifend ut, volutpat id nisi. Ut porta eros at ante rutrum pharetra. Integer nec nulla dictum, vestibulum ligula id, hendrerit ex. Morbi eget tortor metus.
 
-1. Clonar el proyecto
-```bash
-git clone https://github.com/UR-CC/lpa1-taller-requerimientos.git
-```
+## Activacion 
 
-2. Crear y activar entorno virtual
+1. Crear y activar entorno virtual
 ```bash
 cd lpa1-taller-requerimientos
 python -m venv venv
-venv/bin/activate
+.venv/Scripts/activate
 ```
 
 3. Instalar librerías y dependencias
@@ -127,11 +119,11 @@ pip install -r requirements.txt
     
 ## Ejecución
 
-TODO: Corregir la explicación de la ejecución - Maecenas sed lorem at arcu varius mollis. Sed eleifend nulla ut blandit interdum. Donec sollicitudin nunc at orci facilisis dignissim. Donec at arcu luctus, commodo magna eget, blandit leo.
-
 1. Ejecutar el proyecto
 ```bash
-cd lpa1-taller-requerimientos
 python app.py
+
+Flask run
 ```
+
 
